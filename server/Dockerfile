@@ -1,4 +1,4 @@
-FROM balenalib/armv7hf-ubuntu-node:20-build AS dev
+FROM node:22-alpine3.18 AS dev
 
 WORKDIR /usr/src/app
 
@@ -9,8 +9,8 @@ COPY bin/configure-apt.sh ./
 
 # when trixie is released, remove build-perllib-compress-brotli.sh and move libio-compress-brotli-perl from testing to stable
 RUN ./configure-apt.sh && \
-    apt-get update && \
-    apt-get install --no-install-recommends -yqq \
+    apk update && \
+    apk add --no-install-recommends -yqq \
         autoconf \
         build-essential \
         cmake \
@@ -37,7 +37,7 @@ RUN ./configure-apt.sh && \
         postgresql-client-15 \
         postgresql-client-16 \
         postgresql-client-17 && \
-    apt-get install -t testing --no-install-recommends -yqq \
+    apk add -t testing --no-install-recommends -yqq \
         libdav1d-dev \
         libhwy-dev \
         libwebp-dev \
